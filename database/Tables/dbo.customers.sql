@@ -9,7 +9,7 @@ CREATE TABLE [dbo].[customers]
 [postcode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [state_code] [varchar] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 [country_code] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-[express_shipping] [bit] NULL,
+[express_shipping] [bit] NOT NULL,
 [mobile_number] [bigint] NOT NULL
 ) ON [PRIMARY]
 GO

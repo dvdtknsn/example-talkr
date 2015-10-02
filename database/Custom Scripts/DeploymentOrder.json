@@ -1,0 +1,8 @@
+{
+  "About this file": "This is a Redgate SQL Source Control metadata file. It controls the order that changes are deployed in. Learn more: www.red-gate.com/SOC4/order-file-more-info",
+  "Deployment order": [
+    {"Id":"41747015-6d6b-4efd-8d77-9ba91705989e","Description":"Changes before migration script 'express shipping set null to 1 set col to null'"},
+    {"Id":"729f7cdd-624c-4815-91e7-70ea7e0885f4","Description":"Migration script 'express shipping set null to 1 set col to null'"},
+  ],
+  "Conflict in this file?": "If there’s a conflict in this file, you probably want to keep both changes. Learn more: www.red-gate.com/SOC4/order-file-more-info"
+}
