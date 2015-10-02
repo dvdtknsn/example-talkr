@@ -1,0 +1,8 @@
+{
+  "About this file": "This is a Redgate SQL Source Control metadata file. It controls the order that changes are deployed in. Learn more: www.red-gate.com/SOC4/order-file-more-info",
+  "Deployment order": [
+    {"Id":"af1dcf33-bfaf-4184-a87d-6caaa96c72a1","Description":"Changes before migration script 'name change'"},
+    {"Id":"54e8da01-a663-4bfc-89ed-23b540bbfc7d","Description":"Migration script 'name change'"},
+  ],
+  "Conflict in this file?": "If there’s a conflict in this file, you probably want to keep both changes. Learn more: www.red-gate.com/SOC4/order-file-more-info"
+}
