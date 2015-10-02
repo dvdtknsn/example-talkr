@@ -1,0 +1,361 @@
+diff --git a/Filter.scpf b/Filter.scpf
+new file mode 100644
+index 0000000..58630e8
+--- /dev/null
++++ b/Filter.scpf
+@@ -0,0 +1,143 @@
++﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
++<!---->
++<NamedFilter version="1" type="SQLCompareFilter">
++  <!--This filter can be loaded using the SQL Compare UI or used with a SQL Compare command line session using the /filter switch-->
++  <FilterName>Filter created using SQL Source Control</FilterName>
++  <Filter version="1" type="DifferenceFilter">
++    <FilterCaseSensitive>False</FilterCaseSensitive>
++    <Filters version="1">
++      <None version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </None>
++      <Assembly version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Assembly>
++      <AsymmetricKey version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </AsymmetricKey>
++      <Certificate version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Certificate>
++      <Contract version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Contract>
++      <DdlTrigger version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </DdlTrigger>
++      <Default version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Default>
++      <ExtendedProperty version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </ExtendedProperty>
++      <EventNotification version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </EventNotification>
++      <FullTextCatalog version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </FullTextCatalog>
++      <FullTextStoplist version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </FullTextStoplist>
++      <Function version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Function>
++      <MessageType version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </MessageType>
++      <PartitionFunction version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </PartitionFunction>
++      <PartitionScheme version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </PartitionScheme>
++      <Queue version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Queue>
++      <Role version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Role>
++      <Route version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Route>
++      <Rule version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Rule>
++      <Schema version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Schema>
++      <SearchPropertyList version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </SearchPropertyList>
++      <SecurityPolicy version="1">
++        <Include>True</Include>
++        <Expression />
++      </SecurityPolicy>
++      <Sequence version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Sequence>
++      <Service version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Service>
++      <ServiceBinding version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </ServiceBinding>
++      <StoredProcedure version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </StoredProcedure>
++      <SymmetricKey version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </SymmetricKey>
++      <Synonym version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Synonym>
++      <Table version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </Table>
++      <User version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </User>
++      <UserDefinedType version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </UserDefinedType>
++      <View version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </View>
++      <XmlSchemaCollection version="1">
++        <Include>True</Include>
++        <Expression>TRUE</Expression>
++      </XmlSchemaCollection>
++    </Filters>
++  </Filter>
++</NamedFilter>
+\ No newline at end of file
+diff --git a/Functions/dbo.EnumerableRange.sql b/Functions/dbo.EnumerableRange.sql
+new file mode 100644
+index 0000000..a49ccfa
+--- /dev/null
++++ b/Functions/dbo.EnumerableRange.sql
+@@ -0,0 +1,13 @@
++SET QUOTED_IDENTIFIER ON
++GO
++SET ANSI_NULLS ON
++GO
++
++CREATE FUNCTION [dbo].[EnumerableRange] (@start BIGINT, @count SMALLINT) RETURNS TABLE WITH SCHEMABINDING AS
++    RETURN WITH e01 AS (SELECT 0 AS n UNION ALL SELECT 0),
++                e02 AS (SELECT 0 AS n FROM e01, e01 AS other),
++                e04 AS (SELECT 0 AS n FROM e02, e02 AS other),
++                e08 AS (SELECT 0 AS n FROM e04, e04 AS other),
++                e16 AS (SELECT 0 AS n FROM e08, e08 AS other)
++           SELECT TOP (@count) @start + ROW_NUMBER() OVER (ORDER BY n) - 1 AS n FROM e16
++GO
+diff --git a/RedGateDatabaseInfo.xml b/RedGateDatabaseInfo.xml
+new file mode 100644
+index 0000000..581e759
+--- /dev/null
++++ b/RedGateDatabaseInfo.xml
+@@ -0,0 +1,65 @@
++﻿<?xml version="1.0" encoding="utf-8"?>
++<DatabaseInformation Version="2">
++  <ScriptFileEncoding>UTF8</ScriptFileEncoding>
++  <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
++  <DefaultSchema>dbo</DefaultSchema>
++  <DefaultUser>dbo</DefaultUser>
++  <DefaultFilegroup>PRIMARY</DefaultFilegroup>
++  <DatabaseVersion>12</DatabaseVersion>
++  <IsAzure>False</IsAzure>
++  <MaxDataFileSize>10485760</MaxDataFileSize>
++  <WriteToFileOptions>
++    <Prefixes>
++      <None>
++      </None>
++      <Table>Tables</Table>
++      <StoredProcedure>Stored Procedures</StoredProcedure>
++      <View>Views</View>
++      <Default>Defaults</Default>
++      <FullTextCatalog>Storage\Full Text Catalogs</FullTextCatalog>
++      <Function>Functions</Function>
++      <Role>Security\Roles</Role>
++      <Rule>Rules</Rule>
++      <User>Security\Users</User>
++      <UserDefinedType>Types\User-defined Data Types</UserDefinedType>
++      <Trigger>
++      </Trigger>
++      <DdlTrigger>Database Triggers</DdlTrigger>
++      <Assembly>Assemblies</Assembly>
++      <Synonym>Synonyms</Synonym>
++      <XmlSchemaCollection>Types\XML Schema Collections</XmlSchemaCollection>
++      <MessageType>Service Broker\Message Types</MessageType>
++      <Contract>Service Broker\Contracts</Contract>
++      <Queue>Service Broker\Queues</Queue>
++      <Service>Service Broker\Services</Service>
++      <Route>Service Broker\Routes</Route>
++      <EventNotification>Service Broker\Event Notifications</EventNotification>
++      <PartitionScheme>Storage\Partition Schemes</PartitionScheme>
++      <PartitionFunction>Storage\Partition Functions</PartitionFunction>
++      <Field>
++      </Field>
++      <Index>
++      </Index>
++      <Schema>Security\Schemas</Schema>
++      <ServiceBinding>Service Broker\Remote Service Bindings</ServiceBinding>
++      <Certificate>Security\Certificates</Certificate>
++      <SymmetricKey>Security\Symmetric Keys</SymmetricKey>
++      <AsymmetricKey>Security\Asymmetric Keys</AsymmetricKey>
++      <CheckConstraint>
++      </CheckConstraint>
++      <FullTextStoplist>Storage\Full Text Stoplists</FullTextStoplist>
++      <ExtendedProperty>Extended Properties</ExtendedProperty>
++      <Data>Data</Data>
++      <Sequence>Sequences</Sequence>
++      <SearchPropertyList>Search Property Lists</SearchPropertyList>
++      <SecurityPolicy>
++      </SecurityPolicy>
++    </Prefixes>
++    <DataWriteAllFilesInOneDirectory>True</DataWriteAllFilesInOneDirectory>
++  </WriteToFileOptions>
++  <DataFileSet>
++    <Count>2</Count>
++    <DataFile>dbo.countries_Data.sql</DataFile>
++    <DataFile>dbo.states_Data.sql</DataFile>
++  </DataFileSet>
++</DatabaseInformation>
+\ No newline at end of file
+diff --git a/Tables/dbo.countries.sql b/Tables/dbo.countries.sql
+new file mode 100644
+index 0000000..bfa20ec
+--- /dev/null
++++ b/Tables/dbo.countries.sql
+@@ -0,0 +1,10 @@
++CREATE TABLE [dbo].[countries]
++(
++[country_code] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[country_name] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
++) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[countries] ADD CONSTRAINT [PK__countrie__3436E9A4146C6359] PRIMARY KEY CLUSTERED  ([country_code]) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[countries] ADD CONSTRAINT [UQ__countrie__F70188944E12984B] UNIQUE NONCLUSTERED  ([country_name]) ON [PRIMARY]
++GO
+diff --git a/Tables/dbo.customers.sql b/Tables/dbo.customers.sql
+new file mode 100644
+index 0000000..8e11184
+--- /dev/null
++++ b/Tables/dbo.customers.sql
+@@ -0,0 +1,21 @@
++CREATE TABLE [dbo].[customers]
++(
++[customer_id] [int] NOT NULL IDENTITY(1, 1),
++[title] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[name] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[address_line1] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[address_line2] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
++[city] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[postcode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[state_code] [varchar] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[country_code] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[express_shipping] [bit] NULL,
++[mobile_number] [bigint] NOT NULL
++) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[customers] ADD CONSTRAINT [PK__customer__CD65CB85F8E1663E] PRIMARY KEY CLUSTERED  ([customer_id]) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[customers] ADD CONSTRAINT [UQ__customer__30462B0F725B335D] UNIQUE NONCLUSTERED  ([mobile_number]) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[customers] ADD CONSTRAINT [FK__customers__182C9B23] FOREIGN KEY ([country_code], [state_code]) REFERENCES [dbo].[states] ([country_code], [state_code])
++GO
+diff --git a/Tables/dbo.states.sql b/Tables/dbo.states.sql
+new file mode 100644
+index 0000000..591b9fe
+--- /dev/null
++++ b/Tables/dbo.states.sql
+@@ -0,0 +1,13 @@
++CREATE TABLE [dbo].[states]
++(
++[country_code] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[state_code] [varchar] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
++[state_name] [varchar] (25) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
++) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[states] ADD CONSTRAINT [PK__states__0C51C004A9D33AA2] PRIMARY KEY CLUSTERED  ([country_code], [state_code]) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[states] ADD CONSTRAINT [UQ__states__9CE427BC9EBA9628] UNIQUE NONCLUSTERED  ([country_code], [state_name]) ON [PRIMARY]
++GO
++ALTER TABLE [dbo].[states] ADD CONSTRAINT [FK__states__country___145C0A3F] FOREIGN KEY ([country_code]) REFERENCES [dbo].[countries] ([country_code])
++GO
+diff --git a/Views/dbo.customer_addresses.sql b/Views/dbo.customer_addresses.sql
+new file mode 100644
+index 0000000..4c355b0
+--- /dev/null
++++ b/Views/dbo.customer_addresses.sql
+@@ -0,0 +1,17 @@
++SET QUOTED_IDENTIFIER ON
++GO
++SET ANSI_NULLS ON
++GO
++
++CREATE VIEW [dbo].[customer_addresses] WITH SCHEMABINDING AS
++    SELECT  customer_id,
++            address_line1 + ', '
++              + ISNULL(address_line2 + ', ', '')
++              + city + ', '
++              + postcode + ', '
++              + CASE state_name WHEN '' THEN '' ELSE state_name + ', ' END
++              + country_name AS address
++    FROM    dbo.customers
++    JOIN    dbo.states ON states.state_code = customers.state_code AND states.country_code = customers.country_code
++    JOIN    dbo.countries ON countries.country_code = customers.country_code
++GO
+diff --git a/Views/dbo.getFreeMobileNumber.sql b/Views/dbo.getFreeMobileNumber.sql
+new file mode 100644
+index 0000000..c15ba2a
+--- /dev/null
++++ b/Views/dbo.getFreeMobileNumber.sql
+@@ -0,0 +1,12 @@
++SET QUOTED_IDENTIFIER ON
++GO
++SET ANSI_NULLS ON
++GO
++
++CREATE VIEW [dbo].[getFreeMobileNumber] WITH SCHEMABINDING AS
++    SELECT    TOP 1
++              mobile_number
++    FROM      dbo.numbers
++    WHERE     customer_id IS NULL
++    ORDER BY  NEWID()
++GO
+diff --git a/Views/dbo.numbers.sql b/Views/dbo.numbers.sql
+new file mode 100644
+index 0000000..52da8d8
+--- /dev/null
++++ b/Views/dbo.numbers.sql
+@@ -0,0 +1,11 @@
++SET QUOTED_IDENTIFIER ON
++GO
++SET ANSI_NULLS ON
++GO
++
++CREATE VIEW [dbo].[numbers] WITH SCHEMABINDING AS
++    SELECT     n AS mobile_number,
++               customer_id
++    FROM       dbo.EnumerableRange(07700900110, 890)
++    LEFT JOIN  dbo.customers ON mobile_number = n
++GO
